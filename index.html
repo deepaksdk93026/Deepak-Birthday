@@ -263,7 +263,7 @@
         <button type="submit" class="btn btn-send">Send Birthday Wish ✨</button>
       </form>
 
-      <div class="wishes-list" id="wishesContainer"></div>
+      <div class="wishes-list" id="wishesContainer" style="display: none;"></div>
     </div>
   </div>
 
@@ -406,12 +406,13 @@
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({ name, message })
-      });
-      document.getElementById('name').value = '';
-      document.getElementById('message').value = '';
-      loadWishes();
-      triggerCelebration();
-    }
+          });
+    alert("Shukriya! Aapki birthday wish Deepak tak pahunch gayi hai 🎉✨");
+    document.getElementById('name').value = '';
+    document.getElementById('message').value = '';
+    triggerCelebration();
+  }
+
 
     loadWishes();
   </script>
