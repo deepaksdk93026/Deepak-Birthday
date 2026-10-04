@@ -8,23 +8,27 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 
-// Public folder ya root dono se static files serve karega
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(__dirname));
 
 const WISHES_FILE = path.join(__dirname, 'wishes.json');
 
-// Telegram Bot Details
-const TELEGRAM_BOT_TOKEN = '8686859259:AAGc7aeBbej-E1fH9s4g1hs0qDaHdmK7fG8';
-const TELEGRAM_CHAT_ID = '5590745278';
+// Render ke Environment Variables se token aur chat ID lega
+const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
+const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID;
 
 function sendTelegramNotification(name, message) {
-  const text = `🎉 *Nayi Birthday Wish Aayi!*\n\n👤 *From:* ${name}\n💌 *Message:* ${message}\n⏰ *Time:* ${new Date().toLocaleTimeString('en-IN', { timeZone: 'Asia/Kolkata' })}`;
-  
+  if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) {
+    console.error('Telegram Bot Token ya Chat ID nahi mila!');
+    return;
+  }
+
+  // Plain text (bina Markdown formatting ke error avoid karne ke liye)
+  const text = `🎉 Nayi Birthday Wish Aayi!\n\n👤 From: ${name}\n💌 Message: ${message}\n⏰ Time: ${new Date().toLocaleTimeString('en-IN', { timeZone: 'Asia/Kolkata' })}`;
+
   const payload = JSON.stringify({
     chat_id: TELEGRAM_CHAT_ID,
-    text: text,
-    parse_mode: 'Markdown'
+    text: text
   });
 
   const options = {
@@ -39,7 +43,11 @@ function sendTelegramNotification(name, message) {
   };
 
   const req = https.request(options, (res) => {
-    res.on('data', () => {});
+    let responseData = '';
+    res.on('data', (chunk) => { responseData += chunk; });
+    res.on('end', () => {
+      console.log('Telegram API Response:', responseData);
+    });
   });
 
   req.on('error', (e) => {
@@ -63,7 +71,7 @@ app.get('/api/wishes', (req, res) => {
   }
 });
 
-// Wishes Post API (Telegram notification ke saath)
+// Wishes Post API
 app.post('/api/wishes', (req, res) => {
   const { name, message } = req.body;
   if (!name || !message) {
@@ -84,7 +92,7 @@ app.post('/api/wishes', (req, res) => {
 
   fs.writeFileSync(WISHES_FILE, JSON.stringify(wishes, null, 2));
 
-  // Instant Telegram Alert Trigger
+  // Trigger Telegram Alert
   sendTelegramNotification(name, message);
 
   res.status(201).json(newWish);
