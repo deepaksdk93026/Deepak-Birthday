@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Deepak's 23rd Birthday Celebration</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #090a0f;
+      --card-bg: rgba(22, 27, 46, 0.75);
+      --card-border: rgba(255, 255, 255, 0.1);
+      --accent: #8b5cf6;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      background-color: var(--bg);
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(139, 92, 246, 0.25) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(236, 72, 153, 0.25) 0px, transparent 50%);
+      color: var(--text);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px 16px 50px;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 540px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      position: relative;
+      z-index: 10;
+    }
+
+    .glass-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      padding: 24px 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    }
+
+    .hero-card {
+      text-align: center;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 5px 14px;
+      border-radius: 50px;
+      background: rgba(139, 92, 246, 0.2);
+      border: 1px solid rgba(139, 92, 246, 0.4);
+      color: #c4b5fd;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 2.1rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #fff 0%, #cbd5e1 50%, #c084fc 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 6px;
+    }
+
+    p.subtitle {
+      color: var(--text-muted);
+      font-size: 0.92rem;
+    }
+
+    .countdown-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .count-box {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 10px 4px;
+      text-align: center;
+    }
+
+    .count-box .num {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.7rem;
+      font-weight: 700;
+      color: #38bdf8;
+      display: block;
+    }
+
+    .count-box .lbl {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-top: 2px;
+    }
+
+    .action-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .btn {
+      border: none;
+      outline: none;
+      padding: 14px 14px;
+      border-radius: 14px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .btn-celebrate {
+      background: linear-gradient(135deg, #ec4899, #8b5cf6);
+      color: #fff;
+      box-shadow: 0 4px 18px rgba(236, 72, 153, 0.4);
+    }
+
+    .btn-music {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .btn:active {
+      transform: scale(0.94);
+    }
+
+    /* Blast Particle Styles */
+    .blast-particle {
+      position: fixed;
+      pointer-events: none;
+      z-index: 99999;
+      animation: popFly 1.6s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    }
+
+    @keyframes popFly {
+      0% {
+        opacity: 1;
+        transform: translate(0, 0) scale(0.6) rotate(0deg);
+      }
+      80% {
+        opacity: 0.9;
+      }
+      100% {
+        opacity: 0;
+        transform: translate(var(--tx), var(--ty)) scale(1.3) rotate(var(--tr));
+      }
+    }
+
+    h2 {
+      font-size: 1.2rem;
+      margin-bottom: 12px;
+    }
+
+    input, textarea {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 12px;
+      padding: 12px;
+      color: #fff;
+      font-size: 0.92rem;
+      margin-bottom: 8px;
+      outline: none;
+      font-family: inherit;
+    }
+
+    .btn-send {
+      width: 100%;
+      background: #8b5cf6;
+      color: #fff;
+      margin-top: 4px;
+    }
+
+    .wishes-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 16px;
+      max-height: 350px;
+      overflow-y: auto;
+    }
+
+    .wish-bubble {
+      background: rgba(255, 255, 255, 0.03);
+      border-left: 3px solid #8b5cf6;
+      padding: 10px 12px;
+      border-radius: 8px;
+    }
+
+    .wish-author {
+      font-weight: 700;
+      color: #c4b5fd;
+      font-size: 0.85rem;
+      margin-bottom: 3px;
+    }
+
+    .wish-msg {
+      font-size: 0.9rem;
+      color: #e2e8f0;
+      line-height: 1.4;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="glass-card hero-card">
+      <span class="badge">Happy 23rd Birthday</span>
+      <h1>Deepak Kumar</h1>
+      <p class="subtitle">Countdown to the Official Celebration Day ✨</p>
+
+      <div class="countdown-grid">
+        <div class="count-box"><span class="num" id="d">00</span><span class="lbl">Days</span></div>
+        <div class="count-box"><span class="num" id="h">00</span><span class="lbl">Hours</span></div>
+        <div class="count-box"><span class="num" id="m">00</span><span class="lbl">Mins</span></div>
+        <div class="count-box"><span class="num" id="s">00</span><span class="lbl">Secs</span></div>
+      </div>
+
+      <div class="action-row">
+        <button type="button" class="btn btn-celebrate" id="btnCelebrate">🎉 Celebrate</button>
+        <button type="button" class="btn btn-music" id="musicBtn">🎵 Play Music</button>
+      </div>
+    </div>
+
+    <!-- Wishes Wall -->
+    <div class="glass-card">
+      <h2>💌 Birthday Wishes Wall</h2>
+      <form id="wishForm" onsubmit="submitWish(event)">
+        <input type="text" id="name" placeholder="Aapka Naam" required>
+        <textarea id="message" rows="3" placeholder="Deepak ke liye Birthday Wish likhein..." required></textarea>
+        <button type="submit" class="btn btn-send">Send Birthday Wish ✨</button>
+      </form>
+
+      <div class="wishes-list" id="wishesContainer"></div>
+    </div>
+  </div>
+
+  <script>
+    // 1. DOM Direct Particle Blast (Har device aur webview me 100% chalega)
+    function triggerCelebration() {
+      const emojis = ['🎉', '🎂', '✨', '🎈', '⭐', '🔥', '🥳', '🎁', '💖'];
+      const colors = ['#f43f5e', '#ec4899', '#8b5cf6', '#3b82f6', '#10b981', '#f59e0b'];
+      
+      const startX = window.innerWidth / 2;
+      const startY = window.innerHeight * 0.45;
+
+      for (let i = 0; i < 50; i++) {
+        const el = document.createElement('div');
+        el.className = 'blast-particle';
+        
+        const isEmoji = Math.random() > 0.45;
+        if (isEmoji) {
+          el.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+          el.style.fontSize = (Math.random() * 16 + 18) + 'px';
+        } else {
+          el.style.width = (Math.random() * 8 + 8) + 'px';
+          el.style.height = (Math.random() * 8 + 8) + 'px';
+          el.style.borderRadius = Math.random() > 0.5 ? '50%' : '3px';
+          el.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        }
+
+        el.style.left = startX + 'px';
+        el.style.top = startY + 'px';
+
+        const angle = Math.random() * 360;
+        const dist = Math.random() * 260 + 80;
+        const tx = Math.cos(angle * Math.PI / 180) * dist;
+        const ty = Math.sin(angle * Math.PI / 180) * dist - 80;
+        const tr = (Math.random() - 0.5) * 720;
+
+        el.style.setProperty('--tx', tx + 'px');
+        el.style.setProperty('--ty', ty + 'px');
+        el.style.setProperty('--tr', tr + 'deg');
+
+        document.body.appendChild(el);
+        setTimeout(() => el.remove(), 1600);
+      }
+    }
+
+    document.getElementById('btnCelebrate').addEventListener('click', triggerCelebration);
+    document.getElementById('btnCelebrate').addEventListener('touchstart', function(e) {
+      triggerCelebration();
+    }, { passive: true });
+
+    // 2. Countdown to 22 October 2026
+    const targetDate = new Date(2026, 9, 22, 0, 0, 0).getTime();
+    function updateCountdown() {
+      const now = new Date().getTime();
+      const diff = targetDate - now;
+
+      if (diff <= 0) {
+        document.getElementById('d').innerText = "00";
+        document.getElementById('h').innerText = "00";
+        document.getElementById('m').innerText = "00";
+        document.getElementById('s').innerText = "00";
+        return;
+      }
+
+      document.getElementById('d').innerText = String(Math.floor(diff / (1000 * 60 * 60 * 24))).padStart(2, '0');
+      document.getElementById('h').innerText = String(Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
+      document.getElementById('m').innerText = String(Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
+      document.getElementById('s').innerText = String(Math.floor((diff % (1000 * 60)) / 1000)).padStart(2, '0');
+    }
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+
+    // 3. Web Audio Birthday Instrumental
+    let audioCtx = null;
+    let isPlaying = false;
+    let loopTimeout = null;
+
+    function playTone(freq, dur, start) {
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(freq, start);
+      gain.gain.setValueAtTime(0.2, start);
+      gain.gain.exponentialRampToValueAtTime(0.0001, start + dur - 0.05);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start(start);
+      osc.stop(start + dur);
+    }
+
+    function playHappyBirthday() {
+      if (!isPlaying) return;
+      const notes = [
+        {f: 261.63, d: 0.4}, {f: 261.63, d: 0.4}, {f: 293.66, d: 0.8}, {f: 261.63, d: 0.8}, {f: 349.23, d: 0.8}, {f: 329.63, d: 1.2},
+        {f: 261.63, d: 0.4}, {f: 261.63, d: 0.4}, {f: 293.66, d: 0.8}, {f: 261.63, d: 0.8}, {f: 392.00, d: 0.8}, {f: 349.23, d: 1.2},
+        {f: 261.63, d: 0.4}, {f: 261.63, d: 0.4}, {f: 523.25, d: 0.8}, {f: 440.00, d: 0.8}, {f: 349.23, d: 0.8}, {f: 329.63, d: 0.8}, {f: 293.66, d: 0.8}
+      ];
+      let t = audioCtx.currentTime;
+      notes.forEach(n => {
+        playTone(n.f, n.d, t);
+        t += n.d;
+      });
+      loopTimeout = setTimeout(playHappyBirthday, (t - audioCtx.currentTime) * 1000 + 800);
+    }
+
+    document.getElementById('musicBtn').onclick = function() {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (isPlaying) {
+        isPlaying = false;
+        clearTimeout(loopTimeout);
+        this.innerText = "🎵 Play Music";
+      } else {
+        isPlaying = true;
+        this.innerText = "⏸️ Pause Music";
+        playHappyBirthday();
+      }
+    };
+
+    // 4. Wishes Wall
+    async function loadWishes() {
+      try {
+        const res = await fetch('/api/wishes');
+        const data = await res.json();
+        const box = document.getElementById('wishesContainer');
+        box.innerHTML = data.length === 0 ? '<p style="color:var(--text-muted);font-size:0.88rem;text-align:center;">Abhi tak koi wish nahi aayi hai. Pehle aap wish karein! ✨</p>' : '';
+        data.reverse().forEach(w => {
+          const div = document.createElement('div');
+          div.className = 'wish-bubble';
+          div.innerHTML = `<div class="wish-author">${w.name}</div><div class="wish-msg">${w.message}</div>`;
+          box.appendChild(div);
+        });
+      } catch (e) {}
+    }
+
+    async function submitWish(e) {
+      e.preventDefault();
+      const name = document.getElementById('name').value;
+      const message = document.getElementById('message').value;
+      await fetch('/api/wishes', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ name, message })
+      });
+      document.getElementById('name').value = '';
+      document.getElementById('message').value = '';
+      loadWishes();
+      triggerCelebration();
+    }
+
+    loadWishes();
+  </script>
+</body>
+</html>

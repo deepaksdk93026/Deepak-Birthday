@@ -1,0 +1,17 @@
+{
+  "name": "birthday-wishes-server",
+  "version": "1.0.0",
+  "description": "Ultra-aesthetic Birthday Wishes Web Server for Deepak",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "dependencies": {
+    "express": "^4.22.3",
+    "localtunnel": "^2.0.2"
+  },
+  "engines": {
+    "node": "18.x"
+  }
+}
